@@ -5,6 +5,18 @@
 *
 *
 */
+
+// Automatically generated. Make future change here.
+definition(
+    name: "Master Button",
+    namespace: "",
+    author: "Kevin Tierney",
+    description: "Master ON/OFF Button for all lights",
+    category: "My Apps",
+    iconUrl: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience.png",
+    iconX2Url: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience%402x.png"
+)
+
 preferences {
 section("Select Virtual Switch"){
 input "virtSwitch", "capability.switch"
