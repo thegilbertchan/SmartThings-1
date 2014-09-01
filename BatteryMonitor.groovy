@@ -2,6 +2,18 @@
  *  Battery Tester
  *
  */
+
+// Automatically generated. Make future change here.
+definition(
+    name: "Battery Monitor",
+    namespace: "",
+    author: "tierneykev@gmail.com",
+    description: "Monitor battery level of devices",
+    category: "My Apps",
+    iconUrl: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience.png",
+    iconX2Url: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience%402x.png"
+)
+
 preferences {
 	section("Battery Alarm Level") {
 		input "alarmAt", "number", title: "Alert when below...", required: true
