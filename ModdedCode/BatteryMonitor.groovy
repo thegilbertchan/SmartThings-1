@@ -1,5 +1,5 @@
 /**
- *  Battery Tester
+ *  Modified code posted on forum to add pushover notification
  *
  */
 
