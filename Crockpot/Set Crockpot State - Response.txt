@@ -1,0 +1,18 @@
+
+C:\Users\Kevom\Downloads\Wemo>sh "Crockpot - Warm 0 Time.sh"
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle=
+"http://schemas.xmlsoap.org/soap/encoding/"><s:Body>
+<u:SetCrockpotStateResponse xmlns:u="urn:Belkin:service:basicevent:1">
+<time>0</time>
+</u:SetCrockpotStateResponse>
+</s:Body> </s:Envelope>
+
+
+C:\Users\Kevom\Downloads\Wemo>sh "Crockpot - Turn Off.sh"
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle=
+"http://schemas.xmlsoap.org/soap/encoding/"><s:Body>
+<u:SetCrockpotStateResponse xmlns:u="urn:Belkin:service:basicevent:1">
+<time>0</time>
+</u:SetCrockpotStateResponse>
+</s:Body> </s:Envelope>
+C:\Users\Kevom\Downloads\Wemo>
