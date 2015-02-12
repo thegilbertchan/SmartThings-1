@@ -1,0 +1,55 @@
+PLUGGED IN - TURNED OFF
+C:\Users\Kevom\Downloads\Wemo>sh test.sh
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle=
+"http://schemas.xmlsoap.org/soap/encoding/"><s:Body>
+<u:GetCrockpotStateResponse xmlns:u="urn:Belkin:service:basicevent:1">
+<mode>0</mode>
+<time>0</time>
+<cookedTime>0</cookedTime>
+</u:GetCrockpotStateResponse>
+</s:Body> </s:Envelope>
+
+ON - HIGH
+C:\Users\Kevom\Downloads\Wemo>sh test.sh
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle=
+"http://schemas.xmlsoap.org/soap/encoding/"><s:Body>
+<u:GetCrockpotStateResponse xmlns:u="urn:Belkin:service:basicevent:1">
+<mode>52</mode>
+<time>0</time>
+<cookedTime>0</cookedTime>
+</u:GetCrockpotStateResponse>
+</s:Body> </s:Envelope>
+
+ON - LOW
+C:\Users\Kevom\Downloads\Wemo>sh test.sh
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle=
+"http://schemas.xmlsoap.org/soap/encoding/"><s:Body>
+<u:GetCrockpotStateResponse xmlns:u="urn:Belkin:service:basicevent:1">
+<mode>51</mode>
+<time>0</time>
+<cookedTime>0</cookedTime>
+</u:GetCrockpotStateResponse>
+</s:Body> </s:Envelope>
+
+ON - WARM
+C:\Users\Kevom\Downloads\Wemo>sh test.sh
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle=
+"http://schemas.xmlsoap.org/soap/encoding/"><s:Body>
+<u:GetCrockpotStateResponse xmlns:u="urn:Belkin:service:basicevent:1">
+<mode>50</mode>
+<time>0</time>
+<cookedTime>0</cookedTime>
+</u:GetCrockpotStateResponse>
+</s:Body> </s:Envelope>
+
+ON - WARM
+C:\Users\Kevom\Downloads\Wemo>sh test.sh
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle=
+"http://schemas.xmlsoap.org/soap/encoding/"><s:Body>
+<u:GetCrockpotStateResponse xmlns:u="urn:Belkin:service:basicevent:1">
+<mode>0</mode>
+<time>0</time>
+<cookedTime>0</cookedTime>
+</u:GetCrockpotStateResponse>
+</s:Body> </s:Envelope>
+C:\Users\Kevom\Downloads\Wemo>
