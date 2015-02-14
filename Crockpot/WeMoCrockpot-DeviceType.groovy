@@ -173,6 +173,7 @@ def parse(String description){
 
     result
 } // end parse
+
 private getCallBackAddress() {
     device.hub.getDataValue("localIP") + ":" + device.hub.getDataValue("localSrvPortTCP")
 }
@@ -216,8 +217,8 @@ private postRequest(path, SOAPaction, body) {
             'HOST': getHostAddress(),
             'Content-type': 'text/xml; charset=utf-8',
             'SOAPAction': "\"${SOAPaction}\""
-        ]
-    ], device.deviceNetworkId)
+        	]
+    	], device.deviceNetworkId)
 }
 
 def poll() {
@@ -264,21 +265,22 @@ def off() {
 
 def refresh() {
     //log.debug "Executing WeMo Switch 'subscribe', then 'timeSyncResponse', then 'poll'"
+    subscribe()
+    timeSyncResponse()
     poll()
+
 }
 
 def subscribe(hostAddress) {
-    //log.debug "Executing 'subscribe()'"
+    log.debug "Executing 'subscribe()'"
     def address = getCallBackAddress()
     new physicalgraph.device.HubAction("""SUBSCRIBE /upnp/event/basicevent1 HTTP/1.1
-HOST: ${hostAddress}
-CALLBACK: <http://${address}/>
-NT: upnp:event
-TIMEOUT: Second-5400
-User-Agent: CyberGarage-HTTP/1.0
-
-
-""", physicalgraph.device.Protocol.LAN)
+		HOST: ${hostAddress}
+		CALLBACK: <http://${address}/>
+		NT: upnp:event
+		TIMEOUT: Second-5400
+		User-Agent: CyberGarage-HTTP/1.0
+		""", physicalgraph.device.Protocol.LAN)
 }
 
 def subscribe() {
@@ -301,27 +303,24 @@ def subscribe(ip, port) {
 }
 
 def resubscribe() {
-    //log.debug "Executing 'resubscribe()'"
+    log.debug "Executing 'resubscribe()'"
     def sid = getDeviceDataByName("subscriptionId")
     
     new physicalgraph.device.HubAction("""SUBSCRIBE /upnp/event/basicevent1 HTTP/1.1
-HOST: ${getHostAddress()}
-SID: uuid:${sid}
-TIMEOUT: Second-5400
-
-
-""", physicalgraph.device.Protocol.LAN)
+        HOST: ${getHostAddress()}
+        SID: uuid:${sid}
+        TIMEOUT: Second-5400
+		""", physicalgraph.device.Protocol.LAN)
 
 }
 
 def unsubscribe() {
+    log.debug "Executing Unsuscrie"
     def sid = getDeviceDataByName("subscriptionId")
     new physicalgraph.device.HubAction("""UNSUBSCRIBE publisher path HTTP/1.1
-HOST: ${getHostAddress()}
-SID: uuid:${sid}
-
-
-""", physicalgraph.device.Protocol.LAN)
+		HOST: ${getHostAddress()}
+		SID: uuid:${sid}
+		""", physicalgraph.device.Protocol.LAN)
 }
 
 def timeSyncResponse() {
