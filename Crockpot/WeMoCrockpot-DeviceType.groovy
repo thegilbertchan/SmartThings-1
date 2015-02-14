@@ -1,7 +1,7 @@
 /**
  *  Wemo Crockpot Switch (Connect)
  *
- *  Copyright 2014 Nicolas Cerveaux
+ *  Copyright 2014 Kevin Tierney
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  *  in compliance with the License. You may obtain a copy of the License at:
@@ -17,7 +17,7 @@
 preferences {
 
     input "cookingTime", "number", title: "Cooking Cycle Time (min)", description: "Default 0", defaultValue: '0', required: false, displayDuringSetup: true
-    input "cookingMode", "number", title: "Cooking Mode - 50=Warm,51=Low,52=High", description: "Default 50", defaultValue: '50', required: false, displayDuringSetup: true
+    input "cookingMode", "number", title: "Cooking Mode (50=Warm,51=Low,52=High)", description: "Default 50", defaultValue: '50', required: false, displayDuringSetup: true
     
 }
  
@@ -25,7 +25,6 @@ preferences {
 metadata {
     // Automatically generated. Make future change here.
     definition (name: "Wemo Crockpot Switch", namespace: "wemo", author: "Kevin Tierney") {
-        //capability "Energy Meter"
         capability "Actuator"
         capability "Switch"
         capability "Polling"
@@ -34,8 +33,6 @@ metadata {
         command "subscribe"
         command "resubscribe"
         command "unsubscribe"
-        command "levelUp"
-        command "levelDown"
         
         attribute "time" ,string
         attribute "mode", string
@@ -98,25 +95,16 @@ def parse(String description){
     // parse the rest of the message
     if (map.body) {
         def bodyString = new String(map.body.decodeBase64())
-    	def body = new XmlSlurper().parseText(bodyString)
-        
-        
+    	def body = new XmlSlurper().parseText(bodyString)               
 		     
-        //Set Crockpot State Response
-        if(body?.Body?.SetCrockpotStateResponse?.time?.text()){
-        	def crockpotTime = body?.Body?.SetCrockpotStateResponse?.time?.text()
-            log.trace "Got SetCrockpotStateResponse = $crockpotTime"
-            result << createEvent(name: "time", value: crockpotTime)
-        }
-              
-        else if (body?.Body?.SetCrockpotStateResponse?.text()){
+        //Set Crockpot State Response              
+        if (body?.Body?.SetCrockpotStateResponse?.text()){
         	def response = body?.Body?.SetCrockpotStateResponse?.text()
             log.trace "Set Response - $response"
         }
         
         //TimeSync Response
-        else if (body?.property?.TimeSyncRequest?.text()) {
-                
+        else if (body?.property?.TimeSyncRequest?.text()) {                
                 log.trace "Got TimeSyncRequest"
                 result << timeSyncResponse()
             }
@@ -124,12 +112,6 @@ def parse(String description){
         //Get Crockpot State Response
         else if (body?.Body?.GetCrockpotStateResponse?.text)	{
         
-            if(body?.Body?.GetCrockpotStateResponse?.time?.text()){
-                def crockpotTime = body?.Body?.GetCrockpotStateResponse?.time?.text()
-                log.trace "Got GetCrockpotStateResponse Time = $crockpotTime" 
-                result << createEvent(name: "time", value: crockpotTime)
-            }
-
 
             if(body?.Body?.GetCrockpotStateResponse?.mode?.text()){
                 def modeNum = body?.Body?.GetCrockpotStateResponse?.mode?.text()
@@ -160,7 +142,14 @@ def parse(String description){
 
             }        
 
-            if(body?.Body?.GetCrockpotStateResponse?.cookedTime?.text()){
+
+            if(body?.Body?.GetCrockpotStateResponse?.time?.text()){
+                def crockpotTime = body?.Body?.GetCrockpotStateResponse?.time?.text()
+                log.trace "Got GetCrockpotStateResponse Time = $crockpotTime" 
+                result << createEvent(name: "time", value: crockpotTime)
+            }
+
+			if(body?.Body?.GetCrockpotStateResponse?.cookedTime?.text()){
                 def crockpotCookedTime = body?.Body?.GetCrockpotStateResponse?.cookedTime?.text()
                 log.trace "Got GetCrockpotStateResponse cookedTime = ${crockpotCookedTime}"
                 result << createEvent(name: "cookedTime", value: crockpotCookedTime) 
@@ -177,7 +166,7 @@ def parse(String description){
     
     //Other Responses
     else { 
-    	log.trace "Unknown Response - ${body?.text()}"
+    	log.trace "Unknown Response - ${bodystring}"
        }
 
     } // end if map.body
@@ -335,3 +324,25 @@ SID: uuid:${sid}
 """, physicalgraph.device.Protocol.LAN)
 }
 
+def timeSyncResponse() {
+    log.debug "Executing 'timeSyncResponse()'"
+    new physicalgraph.device.HubAction("""POST /upnp/control/timesync1 HTTP/1.1
+        Content-Type: text/xml; charset="utf-8"
+        SOAPACTION: "urn:Belkin:service:timesync:1#TimeSync"
+        Content-Length: 375
+        HOST: ${getHostAddress()}
+        User-Agent: CyberGarage-HTTP/1.0
+
+        <?xml version="1.0" encoding="utf-8"?>
+        <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <s:Body>
+          <u:TimeSync xmlns:u="urn:Belkin:service:timesync:1">
+           <UTC>${new Date().getTime();}</UTC>
+           <TimeZone>-05.00</TimeZone>
+           <dst>1</dst>
+           <DstSupported>1</DstSupported>
+          </u:TimeSync>
+         </s:Body>
+        </s:Envelope>
+        """, physicalgraph.device.Protocol.LAN)
+}
