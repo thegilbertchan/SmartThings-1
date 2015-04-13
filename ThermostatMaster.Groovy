@@ -1,17 +1,15 @@
 /**
-*One Button to rule them all
-*Turns selected lights on/off 
-*Listens to Virtual Switch
+Virtual Switch to control thermostat
 *
 *
 */
 
 // Automatically generated. Make future change here.
 definition(
-    name: "Master Button",
+    name: "Thermostat Master Button",
     namespace: "",
     author: "Kevin Tierney",
-    description: "Master ON/OFF Button for all lights",
+    description: "Master ON/OFF Button for Thermostat",
     category: "My Apps",
     iconUrl: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience.png",
     iconX2Url: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience%402x.png"
@@ -22,8 +20,8 @@ section("Select Virtual Switch"){
 input "virtSwitch", "capability.switch"
 }
 
-section("Which switches should I control") {
-		input "switches", "capability.switch", multiple: true
+section("Which thermostat should I control") {
+		input "thermostat", "capability.thermostat"
 	}
 }
 
@@ -41,13 +39,13 @@ def updated(settings) {
 
 def onHandler(evt) {
 	log.debug "Received on from ${virtSwitch}"
-    switches?.on()
+    	thermostat.on()
 
 }
 
 def offHandler(evt) {
 	log.debug "Received off from ${theSwitch}"
-    switches?.off()
+    	thermostat.off()
 }
 
 def initialize() {
